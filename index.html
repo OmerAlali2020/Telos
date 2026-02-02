@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TELOS | Autonomous Operations</title>
+    <title>TELOS | Operational Systems</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&family=Michroma&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* CSS Reset & Base Styles */
         :root {
-            --bg-color: #050505;
-            --text-primary: #ffffff;
-            --text-secondary: #888888;
-            --grid-color: rgba(255, 255, 255, 0.05);
+            --bg-color: #030303;
+            --text-primary: #e0e0e0;
+            --text-dim: #555555;
+            --accent: #ffffff;
+            --border-color: #1a1a1a;
         }
 
         * {
@@ -30,149 +32,191 @@
             width: 100vw;
             overflow: hidden;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        /* Mysterious Grid Background */
-        .background-grid {
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background-image: 
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 4rem 4rem;
-            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
-            opacity: 0.4;
-            pointer-events: none;
-            z-index: 0;
-            /* animation: grid-move 120s linear infinite; - בוטל זמנית לטובת תזוזת עכבר */
-        }
-
-        /* Vignette */
-        .vignette {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at center, transparent 0%, #050505 90%);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* Content Container */
-        .container {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fade-in-up 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-            animation-delay: 0.2s;
-            display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
         }
 
-        /* --- LOGO STYLES --- */
+        /* --- רקע --- */
+        .grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 6rem 6rem;
+            z-index: -1;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* --- מסגרת היקפית (תחושת מסוף) --- */
+        .frame {
+            position: absolute;
+            inset: 20px;
+            border: 1px solid var(--border-color);
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        .corner-bracket {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: #444;
+            border-style: solid;
+            transition: all 0.5s ease;
+        }
+        /* הגדרת פינות */
+        .tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+        .tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+        .bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+        .br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+        /* --- תוכן מרכזי --- */
+        .container {
+            text-align: center;
+            z-index: 10;
+            max-width: 800px;
+            padding: 0 20px;
+            opacity: 0;
+            animation: fadeIn 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* לוגו */
         .logo {
-            max-width: 100px; /* גודל מקסימלי ללוגו - שנה לפי הצורך */
+            width: 160px; /* הגדלתי מ-100 ל-160 */
             height: auto;
-            margin-bottom: 2rem; /* מרווח בין הלוגו לכותרת */
+            margin: 0 auto 2.5rem auto;
             display: block;
-            
-            /* אופציונלי: אם הלוגו שלך לא לבן לגמרי, זה יכול לעזור */
-            /* filter: brightness(1.2) contrast(1.1); */
+            opacity: 0.9;
         }
 
-        /* Main Title - TELOS */
+        /* כותרת ראשית - פונט Michroma */
         h1 {
-            font-size: clamp(3rem, 10vw, 8rem);
-            font-weight: 700;
+            font-family: 'Michroma', sans-serif; /* פונט רחב ועתידני */
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 40px rgba(255,255,255,0.15);
+        }
+
+        /* תת כותרת */
+        .tagline {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            color: #888;
+            font-size: clamp(0.9rem, 1.5vw, 1.2rem);
             letter-spacing: 0.3em;
-            margin-right: -0.3em;
             text-transform: uppercase;
-            background: linear-gradient(180deg, #ffffff 0%, #666666 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
-            margin-bottom: 1.5rem;
-            line-height: 1;
+            margin-bottom: 3rem;
         }
 
-        /* Thin Separator Line */
-        .separator {
-            width: 60px;
-            height: 1px;
-            background: #333;
-            margin: 0 auto 1.5rem auto;
-        }
-
-        /* Subtitle */
-        p {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--text-secondary);
-            font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+        /* --- אלמנטים טכניים בצדדים (Status Indicators) --- */
+        .status-indicator {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            color: #444;
             letter-spacing: 0.1em;
-            text-transform: uppercase;
+            text-align: right;
+        }
+        .status-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #0f0; /* ירוק */
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 8px #0f0;
+            animation: blink 4s infinite;
         }
 
-        /* Footer */
+        .version-text {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.8rem;
+            color: #333;
+            letter-spacing: 0.1em;
+        }
+
+        /* --- פוטר משפטי (מה-PDF) --- */
         footer {
             position: absolute;
-            bottom: 2rem;
-            z-index: 10;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
+            bottom: 40px;
+            width: 100%;
+            text-align: center;
+            font-family: 'Rajdhani', sans-serif;
             color: #333;
-            letter-spacing: 0.2em;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            line-height: 1.6;
             text-transform: uppercase;
             opacity: 0;
-            animation: fade-in 2s ease-out forwards;
-            animation-delay: 1.5s;
+            animation: fadeIn 2s 1s forwards; /* מופיע בדיליי */
         }
 
-        /* Animations */
-        @keyframes fade-in-up {
+        .highlight {
+            color: #555;
+            font-weight: 700;
+        }
+
+        /* אנימציות */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        @keyframes fade-in {
-            to { opacity: 1; }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
+
     </style>
 </head>
 <body>
 
-    <div class="background-grid"></div>
-    <div class="vignette"></div>
+    <div class="grid-bg"></div>
 
-    <div class="container" id="main-content">
-        <img src="logo.png" alt="Telos Logo" class="logo">
+    <div class="frame">
+        <div class="corner-bracket tl"></div>
+        <div class="corner-bracket tr"></div>
+        <div class="corner-bracket bl"></div>
+        <div class="corner-bracket br"></div>
+    </div>
+
+    <div class="version-text">SYSTEM V.1.0 // SECURE</div>
+    <div class="status-indicator">
+        <span class="status-dot"></span>OPERATIONAL
+    </div>
+
+    <div class="container">
+        <img src="logo.png" alt="TELOS" class="logo">
         
         <h1>TELOS</h1>
-        <div class="separator"></div>
-        <p>The Operating System for Complex Reality</p>
+        
+        <div class="tagline">Autonomy for Physical Operations</div>
     </div>
 
     <footer>
-        © 2026 Telos Global. Restricted Access.
+        <span class="highlight">Telos Operational Systems 2026</span> <br>
+        Proprietary and Confidential. Unauthorized Distribution Prohibited. <br>
+        Engineered for the Tactical Edge.
     </footer>
 
     <script>
-        // JavaScript for subtle parallax mouse effect
+        // אנימציה עדינה למסגרת עם תזוזת העכבר
         document.addEventListener('mousemove', (e) => {
-            const grid = document.querySelector('.background-grid');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
+            const x = (e.clientX / window.innerWidth - 0.5) * 10;
+            const y = (e.clientY / window.innerHeight - 0.5) * 10;
             
-            const moveX = (x - 0.5) * 30; 
-            const moveY = (y - 0.5) * 30;
-            
-            requestAnimationFrame(() => {
-                grid.style.transform = `perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px) translateX(${moveX}px) translateY(${moveY}px)`;
+            document.querySelectorAll('.container').forEach(el => {
+                el.style.transform = `translate(${x}px, ${y}px)`;
             });
         });
     </script>
