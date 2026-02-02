@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TELOS | Autonomous Operations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset & Base Styles */
+        :root {
+            --bg-color: #050505;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --grid-color: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Mysterious Grid Background */
+        .background-grid {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 4rem 4rem; /* גודל המשבצות */
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+            animation: grid-move 120s linear infinite;
+        }
+
+        /* Vignette (החשכה בצדדים) */
+        .vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, #050505 90%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Content Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fade-in-up 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            animation-delay: 0.2s;
+        }
+
+        /* Main Title - TELOS */
+        h1 {
+            font-size: clamp(3rem, 10vw, 8rem); /* רספונסיבי */
+            font-weight: 700;
+            letter-spacing: 0.3em; /* ריווח גדול בין אותיות */
+            margin-right: -0.3em; /* תיקון אופטי לריווח */
+            text-transform: uppercase;
+            /* Metal Gradient Effect */
+            background: linear-gradient(180deg, #ffffff 0%, #666666 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Thin Separator Line */
+        .separator {
+            width: 60px;
+            height: 1px;
+            background: #333;
+            margin: 0 auto 1.5rem auto;
+        }
+
+        /* Subtitle - Typewriter feel */
+        p {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+            font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Footer */
+        footer {
+            position: absolute;
+            bottom: 2rem;
+            z-index: 10;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: #333;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fade-in 2s ease-out forwards;
+            animation-delay: 1.5s;
+        }
+
+        /* Animations */
+        @keyframes fade-in-up {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fade-in {
+            to { opacity: 1; }
+        }
+
+        @keyframes grid-move {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(4rem) translateZ(-200px); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="background-grid"></div>
+    <div class="vignette"></div>
+
+    <div class="container" id="main-content">
+        <h1>TELOS</h1>
+        <div class="separator"></div>
+        <p>The Operating System for Complex Reality</p>
+    </div>
+
+    <footer>
+        © 2026 Telos Global. Restricted Access.
+    </footer>
+
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const grid = document.querySelector('.background-grid');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            // הזזה עדינה של הגריד בהתאם לעכבר
+            const moveX = (x - 0.5) * 20; // 20px movement range
+            const moveY = (y - 0.5) * 20;
+            
+            // אנחנו משתמשים ב-requestAnimationFrame לביצועים חלקים
+            requestAnimationFrame(() => {
+                // שומרים על הטרנספורמציה המקורית ומוסיפים את ההזזה
+                grid.style.transform = `perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px) translateX(${moveX}px) translateY(${moveY}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
