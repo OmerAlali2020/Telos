@@ -45,15 +45,15 @@
             background-image: 
                 linear-gradient(var(--grid-color) 1px, transparent 1px),
                 linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 4rem 4rem; /* גודל המשבצות */
+            background-size: 4rem 4rem;
             transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
             opacity: 0.4;
             pointer-events: none;
             z-index: 0;
-            animation: grid-move 120s linear infinite;
+            /* animation: grid-move 120s linear infinite; - בוטל זמנית לטובת תזוזת עכבר */
         }
 
-        /* Vignette (החשכה בצדדים) */
+        /* Vignette */
         .vignette {
             position: absolute;
             inset: 0;
@@ -71,22 +71,36 @@
             transform: translateY(20px);
             animation: fade-in-up 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             animation-delay: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- LOGO STYLES --- */
+        .logo {
+            max-width: 100px; /* גודל מקסימלי ללוגו - שנה לפי הצורך */
+            height: auto;
+            margin-bottom: 2rem; /* מרווח בין הלוגו לכותרת */
+            display: block;
+            
+            /* אופציונלי: אם הלוגו שלך לא לבן לגמרי, זה יכול לעזור */
+            /* filter: brightness(1.2) contrast(1.1); */
         }
 
         /* Main Title - TELOS */
         h1 {
-            font-size: clamp(3rem, 10vw, 8rem); /* רספונסיבי */
+            font-size: clamp(3rem, 10vw, 8rem);
             font-weight: 700;
-            letter-spacing: 0.3em; /* ריווח גדול בין אותיות */
-            margin-right: -0.3em; /* תיקון אופטי לריווח */
+            letter-spacing: 0.3em;
+            margin-right: -0.3em;
             text-transform: uppercase;
-            /* Metal Gradient Effect */
             background: linear-gradient(180deg, #ffffff 0%, #666666 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
             margin-bottom: 1.5rem;
+            line-height: 1;
         }
 
         /* Thin Separator Line */
@@ -97,7 +111,7 @@
             margin: 0 auto 1.5rem auto;
         }
 
-        /* Subtitle - Typewriter feel */
+        /* Subtitle */
         p {
             font-family: 'JetBrains Mono', monospace;
             color: var(--text-secondary);
@@ -123,21 +137,11 @@
 
         /* Animations */
         @keyframes fade-in-up {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes fade-in {
             to { opacity: 1; }
         }
-
-        @keyframes grid-move {
-            0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(4rem) translateZ(-200px); }
-        }
-
     </style>
 </head>
 <body>
@@ -146,9 +150,11 @@
     <div class="vignette"></div>
 
     <div class="container" id="main-content">
+        <img src="logo.png" alt="Telos Logo" class="logo">
+        
         <h1>TELOS</h1>
         <div class="separator"></div>
-        <p>Autonomy for Physical Operations</p>
+        <p>The Operating System for Complex Reality</p>
     </div>
 
     <footer>
@@ -156,18 +162,16 @@
     </footer>
 
     <script>
+        // JavaScript for subtle parallax mouse effect
         document.addEventListener('mousemove', (e) => {
             const grid = document.querySelector('.background-grid');
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
             
-            // הזזה עדינה של הגריד בהתאם לעכבר
-            const moveX = (x - 0.5) * 20; // 20px movement range
-            const moveY = (y - 0.5) * 20;
+            const moveX = (x - 0.5) * 30; 
+            const moveY = (y - 0.5) * 30;
             
-            // אנחנו משתמשים ב-requestAnimationFrame לביצועים חלקים
             requestAnimationFrame(() => {
-                // שומרים על הטרנספורמציה המקורית ומוסיפים את ההזזה
                 grid.style.transform = `perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px) translateX(${moveX}px) translateY(${moveY}px)`;
             });
         });
